@@ -1,81 +1,15 @@
-// Twilio config.
-var twilioAccountSID = '';
-var twilioAuthToken = '';
-var twilioNumber = '+14073783783';
-
-// Firebase config.
-var firebaseServiceAccount = ''; 
-var firebaseDatabaseUrl = '';
-
-// // Mailgun config.
-// var mailgunApiKey = '';
-// var mailgunDomain = '';
-
-// Create references for libraries.
-var express = require('express');
+var connect = require('connect');
 var http = require('http');
-var firebase = require('firebase');
-var twilio = require('twilio');
-// var mailgun = require('mailgun-js')({apiKey: mailgunApiKey, domain: mailgunDomain});
 
-// Express server setup.
-var router = express();
-var server = http.createServer(router);
-var twilioClient = twilio(twilioAccountSID, twilioAuthToken);
+var app = connect();
 
-// Initialize Firebase.
-firebase.initializeApp({
-  serviceAccount: firebaseServiceAccount,
-  databaseURL: firebaseDatabaseUrl
-});
+app.use(function(req, res){
+  res.end('Hello from Node.js/io.js + Connect.js!\n');
+})
 
-// Create a Firebase database instance.
-var db = firebase.database();
-
-// Create a reference to textMessages.
-var textMessagesRef = db.ref("textMessages");
-
-// // Listen for new objects pushed to textMessagesRef.
-textMessagesRef.on("child_added", function(snapshot) {
-  var textMessageKey = snapshot.key;
-  var textMessage = snapshot.val();
-  twilioClient.messages.create({
-    body: 'Hi ' + textMessage.name + '! Your table for ' + textMessage.size + ' is now ready!',
-    to: textMessage.phoneNumber,
-    from: twilioNumber
-  }, function(err, message) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(message);
-      textMessagesRef.child(textMessageKey).remove();
-    }
-  });
-});
-
-// // Create a reference to emails.
-// var emailsRef = db.ref('emails');
-
-// // Listen for new objects pushed to emailsRef.
-// emailsRef.on("child_added", function(snapshot) {
-//   var email = snapshot.val();
-//   var emailKey = snapshot.key;
-//   var emailData = {
-//     from: '<postmaster@'  + mailgunDomain + '>',
-//     to: email.emailAddress,
-//     subject: 'Welcome to Wait and Eat',
-//     text: 'Thanks for signing up for Wait and Eat!'
-//   };
-//   mailgun.messages().send(emailData, function(error, body) {
-//     console.log(body);
-//     emailsRef.child(emailKey).remove();
-//     if (error) {
-//       console.log(error);
-//     }
-//   });
-// });
-
-server.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", function(){
-  var addr = server.address();
-  console.log("Server listening at", addr.address + ":" + addr.port);
-});
+http.createServer(app).listen(3000);
+if (typeof(PhusionPassenger) !== 'undefined') {
+  console.log('Example app running inside Passenger.');
+} else {
+  console.log('Example app listening on http://127.0.0.1:3000/');
+}

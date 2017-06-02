@@ -1,5 +1,5 @@
 {
-	"name": "angular-course-server",
+	"name": "myrestoserver",
 	"version": "0.0.1",
 	"main": "server.js",
 	"scripts": {
@@ -10,7 +10,8 @@
     "firebase": "~3.0.3",
     "mailgun-js": "~0.7.6",
     "socket.io": "~0.9.14",
-    "twilio": "~2.5.2"
+    "twilio": "~2.5.2",
+    "connect": "^3.3.5"
   },
 	"engines": {
 		"node": "4.4.5"
